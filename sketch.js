@@ -1,24 +1,24 @@
-# p5.play-boilerplate
-Boiler plate for p5.play
-
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 //const Matter= Matter.Matter
 
-var stand1,stand2       
+var stand  
+var ball      
 var engine,world
 var block1,block2,block3,block4,block5,block6,block7,block8,block9,block10,
-block11,block12,block13,block14,block15,block16,block17,block18,block19,block20,block21,block22,block23,block24,block25
-                  
+block11,block12,block13,block14,block15,block16,block17,block18,block19,block20,
+block21,block22,block23,block24,block25
+ var slingshot                 
 
 function setup() {
   engine=Engine.create()
   world= engine.world
   createCanvas(800,400);
-  //createSprite(400, 200, 50, 50);
-  
+ball=Bodies.circle(100,200,15)
+World.add(world,ball)
+slingshot=new Slingshot(ball.body,{x:100,y:200})
 stand1 = new Ground(355,350,170,10);
 stand2 = new Ground(620,230,135,10);
 //bottom level of bigger tower
@@ -56,8 +56,10 @@ block23 = new Box(605,125,30,40);
 block24 = new Box(635,125,30,40);
 //top level of smaller tower
 block25 = new Box(620,85,30,40);
+}
+
 function draw() {
-rectMode(CENTER);
+  rectMode(CENTER);
 background("black");
 block1.display();
 block2.display();
@@ -73,7 +75,7 @@ block11.display();
 block12.display();
 block13.display();
 block14.display();
-block15.display();
+block15.display();                                              
 block16.display();
 block17.display();
 block18.display();
@@ -86,18 +88,17 @@ block24.display();
 block25.display();
 stand1.display();
 stand2.display();
-drawSprites();
-}
+slingshot.display();
+ellipseMode(RADIUS)
+ellipse(ball.position.x,ball.position.y,15,15)
+  drawSprites();
 }
 
-stand=new Ground(450,300,200,10)
-  block1=new Box(330,235,30,40)
-  block2=new Box(360,235,30,40)
-  block3=new Box(390,235,30,40)
-  block4=new Box(420,235,30,40)
-  block5=new Box(450,235,30,40)
-  block6=new Box(480,235,30,40)     
-  block60 = new Box(310,285,30,40);
-  block7=new Box(510,235,30,40)
-  block8=new Box(540,235,30,40)
-  block9=new Box(570,235,30,40)
+function mouseDragged(){
+  Matter.Body.setPosition(ball.body, {x: mouseX , y: mouseY});
+
+
+function mouseReleased(){
+  slingshot.fly();
+}
+}
